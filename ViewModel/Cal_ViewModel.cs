@@ -92,10 +92,11 @@ namespace Calculator
                 }
                 else
                 { 
-                    
-                        Display += input;
-                    
-                    
+                    if(Display.StartsWith("0"))
+                    {
+                        Display = string.Empty;
+                    }
+                        Display += input;                    
                 }
             }
         }
