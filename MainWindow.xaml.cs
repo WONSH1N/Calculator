@@ -23,11 +23,13 @@ namespace Calculator
         private Cal_ViewModel _viewModel;
         public MainWindow()
         {
-            _viewModel = new Cal_ViewModel();
+            
             InitializeComponent();
+            _viewModel = new Cal_ViewModel();
+
             DataContext = _viewModel;
         }
-
+       
       
     }
 }

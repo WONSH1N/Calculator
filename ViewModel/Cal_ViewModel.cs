@@ -57,6 +57,7 @@ namespace Calculator
             ClearCommand = new RelayCommand(Clear);
             NewDot = new RelayCommand(GetNewDot);
             BackCommand = new RelayCommand(Back);
+           
         }
 
         private void EnterNumber(object parameter)
@@ -92,8 +93,12 @@ namespace Calculator
                 }
                 else
                 { 
-                    
-                        Display += input;
+                    if(Display.StartsWith("0"))
+                    {
+                        Display = string.Empty;
+
+                    }
+                    Display += input;
                     
                     
                 }
@@ -132,12 +137,13 @@ namespace Calculator
                 {
                     case "+": result = _model.Add(_firstNumber, secondNumber); break;
                     case "-": result = _model.Sub(_firstNumber, secondNumber); break;
-                    case "*": result = _model.Mul(_firstNumber, secondNumber); break;
-                    case "/": result = _model.Div(_firstNumber, secondNumber); break;
+                    case "×": result = _model.Mul(_firstNumber, secondNumber); break;
+                    case "÷": result = _model.Div(_firstNumber, secondNumber); break;
 
                     default: return;
                 }
                 Display = result.ToString("");//소수점3자리 f3
+                CalcExp = _firstNumber + "" + _operation + "" + secondNumber+ "=" + Display;
                 _isNewInput = true;
             }
             catch (Exception ex)
@@ -169,9 +175,12 @@ namespace Calculator
         {
             if (parameter.ToString() == "DL")
             {
-                if (Display.Length != 0)
+                if (Display.Length > 0)
                 {
                     Display = Display.ToString().Remove(Display.Length - 1);
+                    if (Display.Length == 0)
+                        Display = "0";
+
                 }
                 else
                 {
@@ -180,6 +189,8 @@ namespace Calculator
             }
 
         }
+     
+
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
