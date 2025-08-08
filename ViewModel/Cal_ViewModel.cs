@@ -76,10 +76,11 @@ namespace Calculator
             }
             if (input == "%")
             {
+                
                 double current;
                 if (double.TryParse(Display, out current))
                 {
-                    Display = (_firstNumber * (current / 100)).ToString();
+                    Display = ((current / 100)).ToString();
                 }
             }
 
@@ -127,9 +128,13 @@ namespace Calculator
 
         private void Calculate(object parameter)
         {
-            if (string.IsNullOrEmpty(_operation)) return;
+            if (string.IsNullOrEmpty(_operation))
+            {
+                return;
+            }
             double secondNumber = double.Parse(Display);
             double result;
+          
 
             try
             {
@@ -150,7 +155,7 @@ namespace Calculator
             {
                 Display = $"오류:{ex.Message}";
             }
-
+           
         }
         private void Clear(object parameter)
         {

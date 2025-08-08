@@ -41,9 +41,28 @@
             <Button Name="btnEqual" Content="=" Command="{Binding CalculateCommand}" Margin="0,0,-296,20" FontSize="25" BorderThickness="0"></Button>
         </UniformGrid>
     </Grid>
-    
+
     <Window.InputBindings>
         <KeyBinding Key ="Backspace" Command="{Binding BackCommand}" CommandParameter="DL"/>
-        <KeyBinding Key ="NumPad1" Command="{Binding EnterNumberCommand}" CommandParameter="1"/>
+        <KeyBinding Key ="C" Command="{Binding ClearCommand}" CommandParameter="CA"/>
+        <KeyBinding Key ="Enter" Command="{Binding CalculateCommand}" CommandParameter="="/>
+        <KeyBinding Key ="D1" Command="{Binding EnterNumberCommand}" CommandParameter="1"/>
+        <KeyBinding Key ="D2" Command="{Binding EnterNumberCommand}" CommandParameter="2"/>
+        <KeyBinding Key ="D3" Command="{Binding EnterNumberCommand}" CommandParameter="3"/>
+        <KeyBinding Key ="D4" Command="{Binding EnterNumberCommand}" CommandParameter="4"/>
+        <KeyBinding Key ="D5" Command="{Binding EnterNumberCommand}" CommandParameter="5"/>
+        <KeyBinding Key ="D6" Command="{Binding EnterNumberCommand}" CommandParameter="6"/>
+        <KeyBinding Key ="D7" Command="{Binding EnterNumberCommand}" CommandParameter="7"/>
+        <KeyBinding Key ="D8" Command="{Binding EnterNumberCommand}" CommandParameter="8"/>
+        <KeyBinding Key ="D9" Command="{Binding EnterNumberCommand}" CommandParameter="9"/>
+        <KeyBinding Key ="D0" Command="{Binding EnterNumberCommand}" CommandParameter="0"/>
+        <KeyBinding Key ="F9" Command="{Binding EnterNumberCommand}" CommandParameter="±"/>
+        <KeyBinding Key ="D5" Modifiers="Shift" Command="{Binding EnterNumberCommand}" CommandParameter="%"/>
+
+        <KeyBinding Key="D8" Modifiers="Shift" Command="{Binding SetOperationCommand}" CommandParameter="×"/>
+        <KeyBinding Key="OemQuestion" Command="{Binding SetOperationCommand}" CommandParameter="÷"/>
+        <KeyBinding Key="OemMinus" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
+        <KeyBinding Key="OemPlus" Modifiers="Shift" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
+
     </Window.InputBindings>
 </Window>
