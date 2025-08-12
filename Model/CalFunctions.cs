@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Calculator
 {
+    // 사용 계산식
     public class CalFunctions
     {
         public double Add(double x, double y) => x + y;
