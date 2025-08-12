@@ -20,16 +20,15 @@ namespace Calculator
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Cal_ViewModel _viewModel;
         public MainWindow()
         {
             
             InitializeComponent();
-            _viewModel = new Cal_ViewModel();
 
+            _viewModel = new Cal_ViewModel();
             DataContext = _viewModel;
         }
-       
-      
+
+        private Cal_ViewModel _viewModel;
     }
 }

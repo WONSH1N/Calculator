@@ -7,45 +7,44 @@
         xmlns:local="clr-namespace:Calculator"
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" d:DataContext="{d:DesignInstance Type=local:Cal_ViewModel}" x:Class="Calculator.MainWindow"
         mc:Ignorable="d"
-        Title="Calculator" Height="580" Width="400">
-    <Grid Margin="2,0,0,0">
+        Title="Calculator" Height="520" Width="400">
+    <Grid Margin="2,0,2,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBox Name="story" Text ="{Binding CalcExp}" HorizontalAlignment="Center" HorizontalContentAlignment="Right" FontSize ="36" Background="WhiteSmoke" Margin="0,2,0,2" Width="390" />
-        <TextBox Text="{Binding Display}" HorizontalAlignment="Center" HorizontalContentAlignment="Right" FontSize ="36" FontWeight="Bold" Background="WhiteSmoke" Margin="0,50,0,2" Width="390" Grid.RowSpan="2"/>
+        <TextBox Name="story" Text ="{Binding CalcExp}" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Right" FontSize ="36" Background="WhiteSmoke" Margin="0,2,0,2" />
+        <TextBox Text="{Binding Display}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" FontSize ="36" FontWeight="Bold" Background="WhiteSmoke" Margin="0,50,0,2" Grid.RowSpan="2"/>
 
         <UniformGrid Rows="6" Columns="4" Grid.Row="3" Margin="0,19,0,0">
-            <Button Name="btnPercent" Content="%" Command="{Binding EnterNumberCommand}" CommandParameter="%" Margin="2,1,1,1" FontSize="18" BorderThickness="0"></Button>
-            <Button Name="btnCE" Content="CE" Command="{Binding ClearCommand}" CommandParameter="CE" Margin="2,1,1,1" FontSize="18" BorderThickness="0"></Button>
-            <Button Name="btnClear" Content="C" Command="{Binding ClearCommand}" CommandParameter="CA" Margin="2,1,1,1" FontSize="18" BorderThickness="0"></Button>
-            <Button Name="btnDel" Content="&lt;&lt;" Command="{Binding BackCommand}" CommandParameter="DL" Margin="2,1,1,1" FontSize="18" BorderThickness="0"></Button>
-            <Button Name="btn7" Content="7" Command="{Binding EnterNumberCommand}" CommandParameter="7" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btn8" Content="8" Command="{Binding EnterNumberCommand}" CommandParameter="8" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btn9" Content="9" Command="{Binding EnterNumberCommand}" CommandParameter="9" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btnDiv" Content="÷" Command="{Binding SetOperationCommand}" CommandParameter="÷" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btn4" Content="4" Command="{Binding EnterNumberCommand}" CommandParameter="4" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btn5" Content="5" Command="{Binding EnterNumberCommand}" CommandParameter="5" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btn6" Content="6" Command="{Binding EnterNumberCommand}" CommandParameter="6" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btnMul" Content="×" Command="{Binding SetOperationCommand}" CommandParameter="×" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btn1" Content="1" Command="{Binding EnterNumberCommand}" CommandParameter="1" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btn2" Content="2" Command="{Binding EnterNumberCommand}" CommandParameter="2" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btn3" Content="3" Command="{Binding EnterNumberCommand}" CommandParameter="3" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btnSub" Content="-" Command="{Binding SetOperationCommand}" CommandParameter="-" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btnSign" Content="±" Command="{Binding EnterNumberCommand}" CommandParameter="±" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btn0" Content="0" Command="{Binding EnterNumberCommand}" CommandParameter="0" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btnDot" Content="." Command="{Binding NewDot}" CommandParameter="." Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btnAdd" Content="+" Command="{Binding SetOperationCommand}" CommandParameter="+" Margin="2,1,1,1" FontSize="22" BorderThickness="0"></Button>
-            <Button Name="btnEqual" Content="=" Command="{Binding CalculateCommand}" Margin="0,0,-296,20" FontSize="25" BorderThickness="0"></Button>
+            <Button Name="btnPercent" Content="%" Command="{Binding EnterNumberCommand}" CommandParameter="%" Margin="2,1,1,1" FontSize="18" BorderThickness="0" Focusable="False"></Button>
+            <Button Name="btnCE" Content="CE" Command="{Binding ClearCommand}" CommandParameter="CE" Margin="2,1,1,1" FontSize="18" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btnClear" Content="C" Command="{Binding ClearCommand}" CommandParameter="CA" Margin="2,1,1,1" FontSize="18" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btnDel" Content="&lt;&lt;" Command="{Binding BackCommand}" CommandParameter="DL" Margin="2,1,1,1" FontSize="18" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btn7" Content="7" Command="{Binding EnterNumberCommand}" CommandParameter="7" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btn8" Content="8" Command="{Binding EnterNumberCommand}" CommandParameter="8" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btn9" Content="9" Command="{Binding EnterNumberCommand}" CommandParameter="9" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btnDiv" Content="÷" Command="{Binding SetOperationCommand}" CommandParameter="÷" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btn4" Content="4" Command="{Binding EnterNumberCommand}" CommandParameter="4" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btn5" Content="5" Command="{Binding EnterNumberCommand}" CommandParameter="5" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btn6" Content="6" Command="{Binding EnterNumberCommand}" CommandParameter="6" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btnMul" Content="×" Command="{Binding SetOperationCommand}" CommandParameter="×" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btn1" Content="1" Command="{Binding EnterNumberCommand}" CommandParameter="1" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btn2" Content="2" Command="{Binding EnterNumberCommand}" CommandParameter="2" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btn3" Content="3" Command="{Binding EnterNumberCommand}" CommandParameter="3" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btnSub" Content="-" Command="{Binding SetOperationCommand}" CommandParameter="-" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btnSign" Content="±" Command="{Binding EnterNumberCommand}" CommandParameter="±" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btn0" Content="0" Command="{Binding EnterNumberCommand}" CommandParameter="0" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btnDot" Content="." Command="{Binding NewDot}" CommandParameter="." Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btnAdd" Content="+" Command="{Binding SetOperationCommand}" CommandParameter="+" Margin="2,1,1,1" FontSize="22" BorderThickness="0" Focusable="False" ></Button>
+            <Button Name="btnEqual" Content="=" Command="{Binding CalculateCommand}" FontSize="25" BorderThickness="0" Focusable="False" Margin="2,0,-295,0"/>
         </UniformGrid>
     </Grid>
 
     <Window.InputBindings>
         <KeyBinding Key ="Backspace" Command="{Binding BackCommand}" CommandParameter="DL"/>
         <KeyBinding Key ="C" Command="{Binding ClearCommand}" CommandParameter="CA"/>
-        <KeyBinding Key ="Enter" Command="{Binding CalculateCommand}" CommandParameter="="/>
         <KeyBinding Key ="D1" Command="{Binding EnterNumberCommand}" CommandParameter="1"/>
         <KeyBinding Key ="D2" Command="{Binding EnterNumberCommand}" CommandParameter="2"/>
         <KeyBinding Key ="D3" Command="{Binding EnterNumberCommand}" CommandParameter="3"/>
@@ -58,11 +57,11 @@
         <KeyBinding Key ="D0" Command="{Binding EnterNumberCommand}" CommandParameter="0"/>
         <KeyBinding Key ="F9" Command="{Binding EnterNumberCommand}" CommandParameter="±"/>
         <KeyBinding Key ="D5" Modifiers="Shift" Command="{Binding EnterNumberCommand}" CommandParameter="%"/>
-
+        <KeyBinding Key ="OemPeriod" Command="{Binding NewDot}" CommandParameter="."/>
         <KeyBinding Key="D8" Modifiers="Shift" Command="{Binding SetOperationCommand}" CommandParameter="×"/>
         <KeyBinding Key="OemQuestion" Command="{Binding SetOperationCommand}" CommandParameter="÷"/>
         <KeyBinding Key="OemMinus" Command="{Binding SetOperationCommand}" CommandParameter="-"/>
         <KeyBinding Key="OemPlus" Modifiers="Shift" Command="{Binding SetOperationCommand}" CommandParameter="+"/>
-
+        <KeyBinding Key ="Enter" Command="{Binding CalculateCommand}" CommandParameter="="/>
     </Window.InputBindings>
 </Window>

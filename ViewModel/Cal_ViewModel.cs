@@ -14,11 +14,10 @@ namespace Calculator
 
         private readonly CalFunctions _model;
         private string _display = "0";
-        private string _topDisplay = "0";
+        private string _topDisplay = "";
         private double _firstNumber;
         private string _operation;
         private bool _isNewInput;
-        private bool _isNewDot;
 
         public string Display
         {
@@ -57,7 +56,7 @@ namespace Calculator
             ClearCommand = new RelayCommand(Clear);
             NewDot = new RelayCommand(GetNewDot);
             BackCommand = new RelayCommand(Back);
-           
+
         }
 
         private void EnterNumber(object parameter)
@@ -66,53 +65,59 @@ namespace Calculator
 
             if (input == "±")
             {
-                double current;
-                if (double.TryParse(Display, out current))
+                if (double.TryParse(Display, out double current))
                 {
                     current = -current;
                     Display = current.ToString();
                 }
                 return;
             }
+
             if (input == "%")
             {
-                
+
                 double current;
                 if (double.TryParse(Display, out current))
                 {
-                    Display = ((current / 100)).ToString();
+                    if (_operation == "×")
+                    {
+                        Display = ((current / 100)).ToString();
+                    }
+                    else if (_operation == "+" || _operation == "-")
+                    {
+                        Display = ((_firstNumber) * current / 100).ToString();
+                    }
                 }
             }
 
-            double temp;
-            if (double.TryParse(input, out temp))
+            if (double.TryParse(input, out _))
             {
-                if (_isNewInput)
+                if (_isNewInput || Display == "0")
                 {
                     Display = input;
                     _isNewInput = false;
                 }
                 else
-                { 
-                    if(Display.StartsWith("0"))
-                    {
-                        Display = string.Empty;
-
-                    }
+                {
                     Display += input;
-                    
-                    
+                    _isNewInput = false;
                 }
-            }
+            }           
         }
-
+        
         private void GetNewDot(object parameter)
         {
             if (!Display.Contains("."))
             {
                 Display += ".";
+                
             }
-
+            else if (_isNewInput)
+            {
+                Display = "0.";
+                _isNewInput = false;
+              
+            }
         }
 
         private void SetOperation(object parameter)
@@ -130,12 +135,14 @@ namespace Calculator
         {
             if (string.IsNullOrEmpty(_operation))
             {
-                return;
+                Display.ToString();
+                CalcExp = Display + "=";
+                _isNewInput = true;
             }
+            
             double secondNumber = double.Parse(Display);
             double result;
           
-
             try
             {
                 switch (_operation)
@@ -150,6 +157,8 @@ namespace Calculator
                 Display = result.ToString("");//소수점3자리 f3
                 CalcExp = _firstNumber + "" + _operation + "" + secondNumber+ "=" + Display;
                 _isNewInput = true;
+                _firstNumber = 0;
+                _operation = null;
             }
             catch (Exception ex)
             {
@@ -165,14 +174,14 @@ namespace Calculator
                 CalcExp = "0";
                 _firstNumber = 0;
                 _operation = null;
-                _isNewInput = true;
+                _isNewInput = false;
             }
             else if (parameter.ToString() == "CE")
             {
                 Display = "0";
                 _firstNumber = 0;
                 _operation = null;
-                _isNewInput = true;
+                _isNewInput = false;
             }
 
         }
@@ -195,7 +204,6 @@ namespace Calculator
 
         }
      
-
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
