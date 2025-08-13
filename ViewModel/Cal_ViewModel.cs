@@ -213,7 +213,7 @@ namespace Calculator
             {
                 double result = _numberStack.Pop();
                 Display = result.ToString();
-                CalcExp += "=" + Display;
+                CalcExp += "= " + Display;
 
             }
 
@@ -230,17 +230,24 @@ namespace Calculator
             string op = _operatorStack.Pop();
 
             double result = 0;
-
-            switch (op)
+            try
             {
-                case "+": result = _model.Add(a, b); break;
-                case "-": result = _model.Sub(a, b); break;
-                case "×": result = _model.Mul(a, b); break;
-                case "÷":
-                    if (b == 0)
-                        throw new DivideByZeroException("0으로 나눌 수 없습니다.");
-                    result = _model.Div(a, b);
-                    break;
+                switch (op)
+                {
+                    case "+": result = _model.Add(a, b); break;
+                    case "-": result = _model.Sub(a, b); break;
+                    case "×": result = _model.Mul(a, b); break;
+                    case "÷":
+                        if (b == 0)
+                            throw new DivideByZeroException("0으로 나눌 수 없습니다.");
+                        result = _model.Div(a, b);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Display = $"오류: {ex.Message}";
+                return;
             }
 
             _numberStack.Push(result);
