@@ -6,7 +6,7 @@ namespace Calculator
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T> _execute;
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged; // ICommand 인터페이스를 구현하기 위해서 필요. WPF에서 UI 요소의 활성화 상태를 변경할 때 사용됨.
 
 
         public RelayCommand(Action<T> execute) => _execute = execute;
