@@ -5,12 +5,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator"
-        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"     
         x:Class="Calculator.MainWindow"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:Cal_ViewModel}"
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"     
         xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         Title="Calculator" Height="500" Width="320">
@@ -91,10 +91,10 @@
             <dx:SimpleButton Name="btnDot" Content="." Command="{Binding NewDot}" CommandParameter="." Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource NumberButtonStyle}"></dx:SimpleButton>
             <dx:SimpleButton Name="btnAdd" Content="+" Command="{Binding SetOperationCommand}" CommandParameter="+" Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource OperatorButtonStyle}"></dx:SimpleButton>
 
-            <dx:SimpleButton Name="btnMA" Content="M+" Command="{Binding SetOperationCommand}" CommandParameter="" Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource LowerButtonStyle}"></dx:SimpleButton>
-            <dx:SimpleButton Name="btnMR" Content="MR" Command="{Binding SetOperationCommand}" CommandParameter="" Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource LowerButtonStyle}"></dx:SimpleButton>
-            <dx:SimpleButton Name="btnMC" Content="MC" Command="{Binding SetOperationCommand}" CommandParameter="" Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource LowerButtonStyle}"></dx:SimpleButton>
-            <dx:SimpleButton Name="btnEqual" Content="=" Command="{Binding CalculateCommand}" FontSize="25" BorderThickness="0" Focusable="False" Style="{StaticResource OperatorButtonStyle}"></dx:SimpleButton>
+            <dx:SimpleButton Name="btnMA" Content="M+" Command="{Binding MemoryAddCommand}" Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource LowerButtonStyle}"></dx:SimpleButton>
+            <dx:SimpleButton Name="btnMR" Content="MR" Command="{Binding MemoryReadCommand}" Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource LowerButtonStyle}"></dx:SimpleButton>
+            <dx:SimpleButton Name="btnMC" Content="MC" Command="{Binding MemoryClearCommand}" Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource LowerButtonStyle}"></dx:SimpleButton>
+            <dx:SimpleButton Name="btnEqual" Content="=" Command="{Binding CalculateCommand}" CommandParameter="=" FontSize="25" BorderThickness="0" Focusable="False" Style="{StaticResource OperatorButtonStyle}"></dx:SimpleButton>
         </UniformGrid>
         
 

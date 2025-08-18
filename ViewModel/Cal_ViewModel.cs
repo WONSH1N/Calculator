@@ -6,6 +6,8 @@ using System.ComponentModel;
 using System.Diagnostics.Eventing.Reader;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Data.SqlClient;
+using Calculator.Model;
 
 namespace Calculator
 {
@@ -16,9 +18,8 @@ namespace Calculator
         private readonly CalFunctions _model;
         private string _display = "0";
         private string _topDisplay = "";
-        private double _firstNumber;
-        private string _operation;
-        private bool _isNewInput;
+        private bool _isNewInput = true; // 새 입력 상태 여부
+        private bool _isResultDisplayed = false; // 결과가 표시된 상태여부
 
         // 연산 우선 순위
         private Stack<double> _numberStack = new Stack<double>();
@@ -48,7 +49,7 @@ namespace Calculator
             get => _topDisplay;
             set
             {
-                _topDisplay = value ?? "0";
+                _topDisplay = value ?? "";
                 OnPropertyChanged();
             }
         }
@@ -60,19 +61,30 @@ namespace Calculator
         public ICommand NewDot { get; }
         public ICommand BackCommand { get; }
 
+        // 메모리 기능
+        public ICommand MemoryAddCommand { get; }
+        public ICommand MemoryReadCommand { get; }
+        public ICommand MemoryClearCommand { get; }
+
+
         public Cal_ViewModel()
         {
             _model = new CalFunctions();
-            _isNewInput = true;
+            
             EnterNumberCommand = new RelayCommand(EnterNumber);
             SetOperationCommand = new RelayCommand(SetOperation);
             CalculateCommand = new RelayCommand(Calculate);
             ClearCommand = new RelayCommand(Clear);
-            NewDot = new RelayCommand(GetNewDot);
             BackCommand = new RelayCommand(Back);
+            NewDot = new RelayCommand(GetNewDot);
+
+            MemoryAddCommand = new RelayCommand(MemoryAdd);
+            MemoryReadCommand = new RelayCommand(MemoryRead);
+            MemoryClearCommand = new RelayCommand(MemoryClear);
 
         }
 
+        // 숫자, ±, % 입력
         private void EnterNumber(object parameter) // object는 최상위 데이터 타입, 어떤 타입이든 받음
         {
             string input = parameter.ToString();
@@ -89,65 +101,87 @@ namespace Calculator
 
             if (input == "%")
             {
-
-                double current;
-                if (double.TryParse(Display, out current))
+                if (double.TryParse(Display, out double current))
                 {
-                    if (_operation == "×")
+                    double percentValue = 0;
+
+                    if (_operatorStack.Count > 0 && _numberStack.Count > 0)
                     {
-                        Display = ((current / 100)).ToString();
+                        string lastOperator = _operatorStack.Peek();
+                        double baseNumber = _numberStack.Peek();
+
+                        if (lastOperator == "+" || lastOperator == "-")
+                        {
+                            percentValue = baseNumber * current / 100.0;
+                        }
+                        else
+                        {
+                            percentValue = current / 100.0;
+                        }
                     }
-                    else if (_operation == "+" || _operation == "-")
+                    else
                     {
-                        Display = ((_firstNumber) * current / 100).ToString();
+                        percentValue = current / 100.0;
                     }
+
+                    Display = percentValue.ToString();
+                    _isNewInput = true;
                 }
+                return;
             }
 
-            if (double.TryParse(input, out _)) 
+            if (double.TryParse(input, out _))
             {
-                if (_isNewInput || Display == "0")
+                if (_isNewInput || _isResultDisplayed || Display == "0")
                 {
+                    if (_isResultDisplayed)
+                    {
+                        _numberStack.Clear();
+                        _operatorStack.Clear();
+                        CalcExp = "";
+                        _isResultDisplayed = false;
+                    }
+
                     Display = input;
                     _isNewInput = false;
+
                 }
                 else
                 {
                     Display += input;
-                    _isNewInput = false;
                 }
-            }           
+            }
         }
-        
+
+        // 소수점 입력
         private void GetNewDot(object parameter)
         {
-            if (!Display.Contains("."))
-            {
-                Display += ".";
-                
-            }
-            else if (_isNewInput)
+            if (_isNewInput || _isResultDisplayed)
             {
                 Display = "0.";
                 _isNewInput = false;
-              
+                _isResultDisplayed = false;
+            }
+            else if (!Display.Contains("."))
+            {
+                Display += ".";
             }
         }
 
-        //private void SetOperation(object parameter)
-        //{
-        //    if (!_isNewInput) Calculate(null);
-        //    _firstNumber = double.Parse(Display);
-        //    _operation = parameter.ToString();
-        //    _isNewInput = true;
-
-        //    CalcExp = Display + "" + parameter;
-
-        //}
+        // 연산자 입력
         private void SetOperation(object parameter)
         {
             string newOp = parameter.ToString();
             double currentNumber = double.Parse(Display);
+
+            
+            // 계산 후 연산자를 누를 경우 초기화
+            if (_isResultDisplayed)
+            {
+                _operatorStack.Clear();
+                CalcExp = "";
+                _isResultDisplayed = false; // 결과 표시 플래그 초기화
+            }
             if (!_isNewInput)
             {
                 _numberStack.Push(currentNumber);
@@ -162,64 +196,36 @@ namespace Calculator
             _operatorStack.Push(newOp);
             CalcExp += Display + " " + newOp + " ";
         }
-        //private void Calculate(object parameter)
-        //{
-        //    if (string.IsNullOrEmpty(_operation))
-        //    {
-        //        Display.ToString();
-        //        CalcExp = Display + "=";
-        //        _isNewInput = true;
-        //    }
-            
-        //    double secondNumber = double.Parse(Display);
-        //    double result;
-          
-        //    try
-        //    {
-        //        switch (_operation)
-        //        {
-        //            case "+": result = _model.Add(_firstNumber, secondNumber); break;
-        //            case "-": result = _model.Sub(_firstNumber, secondNumber); break;
-        //            case "×": result = _model.Mul(_firstNumber, secondNumber); break;
-        //            case "÷": result = _model.Div(_firstNumber, secondNumber); break;
 
-        //            default: return;
-        //        }
-        //        Display = result.ToString("");
-        //        CalcExp = _firstNumber + "" + _operation + "" + secondNumber+ "=" + Display;
-        //        _isNewInput = true;
-        //        _firstNumber = 0;
-        //        _operation = null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Display = $"오류:{ex.Message}";
-        //    }
-           
-        //}
+        // 계산, '=' 입력
         private void Calculate(object parameter)
         {
-            if (!_isNewInput)
+            if (double.TryParse(Display, out double currentNumber))
             {
-                _numberStack.Push(double.Parse(Display));
+                _numberStack.Push(currentNumber);
                 CalcExp += Display;
             }
             while (_operatorStack.Count > 0)
             {
                 PerformCalculation();
-                
             }
             if (_numberStack.Count > 0)
             {
                 double result = _numberStack.Pop();
                 Display = result.ToString();
-                CalcExp += "= " + Display;
+                CalcExp += " = " + Display;
 
+                _numberStack.Clear();
+                _operatorStack.Clear();
+                _numberStack.Push(result); // 결과를 스택에 저장
             }
 
             _isNewInput = true;
+            _isResultDisplayed = true; // 결과표시 플래그
+            
         }
-
+        
+        // 계산 수행
         private void PerformCalculation()
         {
             if (_numberStack.Count < 2 || _operatorStack.Count == 0)
@@ -247,51 +253,35 @@ namespace Calculator
             catch (Exception ex)
             {
                 Display = $"오류: {ex.Message}";
+                _numberStack.Clear();
+                _operatorStack.Clear();
                 return;
             }
-
+            Display = result.ToString();
             _numberStack.Push(result);
         }
-
-        //private void Clear(object parameter)
-        //{
-        //    if (parameter.ToString() == "CA")
-        //    {
-        //        Display = "0";
-        //        CalcExp = "0";
-        //        _firstNumber = 0;
-        //        _operation = null;
-        //        _isNewInput = false;
-        //    }
-        //    else if (parameter.ToString() == "CE")
-        //    {
-        //        Display = "0";
-        //        _firstNumber = 0;
-        //        _operation = null;
-        //        _isNewInput = false;
-        //    }
-
-        //}
+        
+        // 지우기
         private void Clear(object parameter)
         {
             if (parameter.ToString() == "CA")
             {
                 Display = "0";
                 CalcExp = "";
-                _firstNumber = 0;
-                _operation = null;
                 _isNewInput = false;
+                _isResultDisplayed = false;
 
                 _numberStack.Clear();
                 _operatorStack.Clear();
+
             }
             else if (parameter.ToString() == "CE")
             {
                 Display = "0";
                 _isNewInput = false;
+                _isResultDisplayed = false;
             }
         }
-
         private void Back(object parameter)
         {
             if (parameter.ToString() == "DL")
@@ -310,12 +300,55 @@ namespace Calculator
             }
 
         }
-     
+
+        // DB 기능 Save, Load, Clear
+        private readonly Cal_Memory _memory = new Cal_Memory();
+
+        public void MemoryAdd(object parameter)
+        {
+            double value = double.Parse(Display);
+            _memory.Save(value);
+        }
+        private void MemoryRead(object parameter)
+        {
+            var value = _memory.Load();
+            if (value != null)
+            {
+                double memoryValue = value.Value;
+                if (_operatorStack.Count > 0 && !_isNewInput)
+                {
+                    // 저장된 값 후입력
+                    Display = memoryValue.ToString();
+                    _isNewInput = true;
+                }
+                else
+                {
+                    // 저장된 값 선입력
+                    Display = value.ToString();
+                    _isNewInput = false;
+                    _numberStack.Clear();
+                    _operatorStack.Clear();
+                    CalcExp = "";
+                }
+
+                _isResultDisplayed = false;
+            }
+
+        }
+        private void MemoryClear(object parameter)
+        {
+            _memory.Clear();
+            Display = "0";
+            CalcExp = "";
+            _isNewInput = false;
+            _isResultDisplayed = false;
+            _numberStack.Clear();
+            _operatorStack.Clear();
+        }
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-
     }
+
 }
