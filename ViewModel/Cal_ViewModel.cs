@@ -1,13 +1,9 @@
-﻿
-using Calculator;
+﻿using Calculator.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using System.Data.SqlClient;
-using Calculator.Model;
 
 namespace Calculator
 {
@@ -25,6 +21,7 @@ namespace Calculator
         private Stack<double> _numberStack = new Stack<double>();
         private Stack<String> _operatorStack = new Stack<string>();
 
+        // = 반복
         private string _lastOp = null;
         private double _lastNum = 0;
         private bool _hasLastOp = false;
@@ -43,8 +40,9 @@ namespace Calculator
             get => _display;
             set
             {
-                _display = value ?? "0";
-                OnPropertyChanged();
+                    _display = value ?? "0";
+                    OnPropertyChanged();
+                
             }
         }
         // 계산 표현식
@@ -92,7 +90,7 @@ namespace Calculator
         private void EnterNumber(object parameter) // object는 최상위 데이터 타입, 어떤 타입이든 받음
         {
             string input = parameter.ToString();
-
+            
             if (input == "±")
             {
                 if (double.TryParse(Display, out double current)) // out 키워드는 출력 매개변수로 매서드에서 값을 반환할 때 사용
@@ -107,7 +105,7 @@ namespace Calculator
             {
                 if (double.TryParse(Display, out double current))
                 {
-                    double percentValue = 0;
+                    double percentValue = 0; // 퍼센트 값 초기화
 
                     if (_operatorStack.Count > 0 && _numberStack.Count > 0)
                     {
@@ -129,13 +127,14 @@ namespace Calculator
                 }
                 return;
             }
-            double temp;
-            if (double.TryParse(input, out temp))
+            
+            if (double.TryParse(input, out _))
             {
                 if (_isNewInput || _isResultDisplayed || Display == "0")
                 {
                     if (_isResultDisplayed)
-                    {
+                    {   
+                        // 결과가 표시된 상태에서 새로운 숫자를 입력하면 초기화
                         _numberStack.Clear();
                         _operatorStack.Clear();
                         CalcExp = "";
@@ -172,12 +171,31 @@ namespace Calculator
         private void SetOperation(object parameter)
         {
             string newOp = parameter.ToString();
-            double currentNumber = double.Parse(Display);
+            double currentNumber = double.Parse(Display.Replace(",", "")); // 천단위 쉼표 제거
 
             // 새로운 연산자를 입력할 때 마지막 연산 반복 초기화
             _lastOp = null; // 마지막 연산자
             _lastNum = 0; // 마지막 숫자
             _hasLastOp = false; // 마지막 연산자 존재 여부
+
+            // 연산자가 연속 입력된 경우
+            if (_isNewInput && _operatorStack.Count > 0)
+            {
+                _operatorStack.Pop();
+                _operatorStack.Push(newOp);
+
+                // CalcExp의 마지막 연산자를 새 연산자로 변경
+                if (!string.IsNullOrWhiteSpace(CalcExp))
+                {
+                    CalcExp = CalcExp.TrimEnd();
+                    int lastSpaceIdx = CalcExp.LastIndexOf(' ');
+                    if (lastSpaceIdx >= 0)
+                    {
+                        CalcExp = CalcExp.Substring(0, lastSpaceIdx) + " " + newOp + " ";
+                    }
+                }
+                return;
+            }
 
             // 계산 후 연산자를 누를 경우 초기화
             if (_isResultDisplayed)
@@ -274,7 +292,7 @@ namespace Calculator
                     _lastNum = currentNumber;
 
                     int lastOpIdx = CalcExp.LastIndexOfAny(new char[] { '+', '-', '×', '÷' });
-                    if (lastOpIdx != -1)
+                    if (lastOpIdx != -1) // 마지막 연산자 인덱스가 유효한 경우, 없으면 -1
                     {
                         _lastOp = CalcExp.Substring(lastOpIdx, 1);
                         _hasLastOp = true;
@@ -293,7 +311,7 @@ namespace Calculator
         private void PerformCalculation()
         {
             if (_numberStack.Count < 2 || _operatorStack.Count == 0)
-                return;
+                return; 
 
             double b = _numberStack.Pop();
             double a = _numberStack.Pop();
@@ -325,7 +343,7 @@ namespace Calculator
             _numberStack.Push(result);
         }
 
-        // 지우기
+        // 지우기 기능
         private void Clear(object parameter)
         {
             if (parameter.ToString() == "CA")

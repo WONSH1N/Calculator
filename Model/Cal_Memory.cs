@@ -26,7 +26,7 @@ namespace Calculator.Model
                 {
                     conn.Open();
 
-                    EnsureTableExists(conn);
+                    EnsureTable(conn);
 
                     string insertSql = "INSERT INTO memorystore (Value) VALUES (@val);";
                     using (var cmd = new MySqlCommand(insertSql, conn))
@@ -50,7 +50,7 @@ namespace Calculator.Model
                 {
                     conn.Open();
 
-                    EnsureTableExists(conn);
+                    EnsureTable(conn);
 
                     string selectSql = "SELECT Value FROM memorystore ORDER BY Id DESC LIMIT 1;";
                     using (var cmd = new MySqlCommand(selectSql, conn))
@@ -75,7 +75,7 @@ namespace Calculator.Model
                 {
                     conn.Open();
 
-                    EnsureTableExists(conn);
+                    EnsureTable(conn);
 
                     string deleteSql = "DELETE FROM memorystore;";
                     using (var cmd = new MySqlCommand(deleteSql, conn))
@@ -90,7 +90,7 @@ namespace Calculator.Model
             }
         }
 
-        private void EnsureTableExists(MySqlConnection conn)
+        private void EnsureTable(MySqlConnection conn)
         {
             string checkSql = @"
                 SELECT COUNT(*)
