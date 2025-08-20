@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Calculator.View
 {
     /// <summary>
-    /// Loggin.xaml에 대한 상호 작용 논리
+    /// Account.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class Loggin : Window
+    public partial class Account : Window
     {
-        public Loggin()
+        public Account()
         {
             InitializeComponent();
         }

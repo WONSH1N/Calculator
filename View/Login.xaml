@@ -1,0 +1,40 @@
+﻿<Window x:Class="Calculator.View.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Calculator.View"
+        mc:Ignorable="d"
+        Title="Loggin" Height="500" Width="320">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.3*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <!-- 바디 -->
+        <StackPanel Grid.Row="1">
+            <ComboBox/>
+            <PasswordBox/>
+            <Button Content="로그인"/>
+        </StackPanel>
+
+        <!-- 바텀 -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" 
+                    Content="계정찾기"/>
+
+            <Button Grid.Column="1"
+                    Content="비밀번호 재설정"/>
+
+     
+        </Grid>
+
+    </Grid>
+</Window>

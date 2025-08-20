@@ -66,7 +66,25 @@
             <RowDefinition Height="50"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBox Name="story" Text ="{Binding CalcExp}" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Right" FontSize ="30" Background="Black" Foreground="WhiteSmoke" Margin="10,2,10,2" BorderBrush="Black" BorderThickness="1"/>
+        <!-- 메뉴 버튼 -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10,0,0,0" VerticalAlignment="Center">
+            <dx:SimpleButton Name="MenuButton" Content="☰" Width="40" Height="40" 
+                         Click="MenuButton_Click"/>
+        </StackPanel>
+
+        <!-- 팝업 메뉴 -->
+        <Popup Name="MenuPopup" PlacementTarget="{Binding ElementName=MenuButton}" 
+           Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+            <Border Background="#333" CornerRadius="5" Padding="5" Margin="0,5,0,0">
+                <ListBox SelectionChanged="MenuListBox_SelectionChanged"
+                     Background="Transparent" Foreground="White" BorderThickness="0">
+                    <ListBoxItem Content="계정관리" Padding="10"/>
+                    <ListBoxItem Content="메모지" Padding="10"/>
+                </ListBox>
+            </Border>
+        </Popup>
+        
+        <TextBox Name="story" Text ="{Binding CalcExp}" HorizontalAlignment="Stretch"  HorizontalContentAlignment="Right" FontSize ="30" Background="Black" Foreground="WhiteSmoke" Margin="10,2,10,2" Grid.Row="1" BorderBrush="Black" BorderThickness="1"/>
         <TextBox Text="{Binding Display}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" FontSize ="36" FontWeight="Bold" Background="Black" Foreground="WhiteSmoke" Margin="10,50,10,2" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1"/>
         <!--입력 버튼-->
         <UniformGrid Rows="6" Columns="4" Grid.Row="3" Margin="3,10,3,10">
