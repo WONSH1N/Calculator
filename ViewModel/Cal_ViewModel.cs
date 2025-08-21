@@ -1,6 +1,8 @@
 ﻿using Calculator.Model;
+using Calculator.View;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -33,6 +35,8 @@ namespace Calculator
             {"×", 2},
             {"÷", 2}
         };
+        // 메모지 기능
+        public ObservableCollection<NoteItem> NoteHistory { get; } = new ObservableCollection<NoteItem>();
 
         // 출력 화면
         public string Display
@@ -305,6 +309,13 @@ namespace Calculator
 
             _isNewInput = true;
             _isResultDisplayed = true; // 결과표시 플래그
+
+            // 메모지 기능에 결과 추가
+            NoteHistory.Add(new NoteItem
+            {
+                CalExp = CalcExp,
+                Display = Display
+            });
         }
 
         // 계산 수행

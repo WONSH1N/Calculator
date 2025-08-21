@@ -5,35 +5,63 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calculator.View"
         mc:Ignorable="d"
-        Title="Loggin" Height="500" Width="320">
+        Title="Login" Height="500" Width="320">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1.3*"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-
+        <Grid Grid.Row="0">
+            <Image Source="/Images/loginImage.ico" Width="32" Height="32" />
+        </Grid>
         <!-- 바디 -->
-        <StackPanel Grid.Row="1">
-            <ComboBox/>
-            <PasswordBox/>
-            <Button Content="로그인"/>
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <!-- Username ComboBox -->
+            <ComboBox 
+              x:Name="IdComboBox"  
+              Width="160"
+              IsEditable="True"
+              Text="Username"
+              Foreground="Gray"
+              GotFocus="ComboBox_GotFocus"
+              LostFocus="ComboBox_LostFocus"
+              Margin="0,0,0,10"/>
+
+            <!-- PasswordBox with Watermark -->
+            <Grid Width="160" Margin="0,0,0,20">
+                <PasswordBox Name="PasswordInput"
+                    PasswordChanged="PasswordBox_PasswordChanged"/>
+                
+                <TextBlock Text="Password"
+                   Foreground="Gray"
+                   Margin="5,2,0,0"
+                   IsHitTestVisible="False"
+                   Name="PasswordHint"
+                   VerticalAlignment="Center"/>
+            
+            </Grid>
+
+            <!-- Login Button -->
+            <Button Content="로그인" Width="100" Margin="0,20,0,0"
+                    Click="LoginButton_Click"/>
         </StackPanel>
 
+
         <!-- 바텀 -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" Margin="10, 0, 10, 10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" 
-                    Content="계정찾기"/>
+                    Content="회원가입" Width="100"/>
 
             <Button Grid.Column="1"
-                    Content="비밀번호 재설정"/>
+                    Content="비밀번호 찾기" Width="100"/>
 
-     
+
         </Grid>
 
     </Grid>

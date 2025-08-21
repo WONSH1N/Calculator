@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Calculator.Model
 {
-    internal class AccountControl
+    public class AccountControl
     {
+        public int Account { get; set; } // primary key, Auto Increment
+        public string Id { get; set; } 
+        public string Password { get; set; } 
+        public DateTime Date { get; set; } 
+        public string Authority { get; set; } // admin, user, guest
     }
 }
