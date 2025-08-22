@@ -82,16 +82,7 @@
                                  BorderBrush="Transparent"/>
             </StackPanel>
 
-            <TextBox Name="calDisplay" Text ="{Binding CalcExp}"  HorizontalContentAlignment="Right" FontSize ="30" Background="Black" Foreground="WhiteSmoke" Margin="3,2,7,4" BorderBrush="Black" BorderThickness="1" TextChanged="calDisplay_TextChanged" RenderTransformOrigin="0.5,0.5" Grid.Column="1">
-                <TextBox.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform ScaleX="1"/>
-                        <SkewTransform/>
-                        <RotateTransform/>
-                        <TranslateTransform/>
-                    </TransformGroup>
-                </TextBox.RenderTransform>
-            </TextBox>
+            <TextBox Name="calDisplay" Text ="{Binding CalcExp}"  HorizontalContentAlignment="Right" FontSize ="30" Background="Black" Foreground="WhiteSmoke" Margin="7,2,9,4" BorderBrush="Black" BorderThickness="1" Grid.Column="1"/>
 
         </Grid>
 
@@ -135,7 +126,7 @@
             <dx:SimpleButton Name="btnMA" Content="M+" Command="{Binding MemoryAddCommand}" Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource LowerButtonStyle}"></dx:SimpleButton>
             <dx:SimpleButton Name="btnMR" Content="MR" Command="{Binding MemoryReadCommand}" Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource LowerButtonStyle}"></dx:SimpleButton>
             <dx:SimpleButton Name="btnMC" Content="MC" Command="{Binding MemoryClearCommand}" Margin="2,1,1,1" BorderThickness="0" Focusable="False" Style="{StaticResource LowerButtonStyle}"></dx:SimpleButton>
-            <dx:SimpleButton Name="btnEqual" Content="=" Command="{Binding CalculateCommand}" CommandParameter="=" FontSize="25" BorderThickness="0" Focusable="False" Style="{StaticResource OperatorButtonStyle}"></dx:SimpleButton>
+            <dx:SimpleButton Name="btnEqual" Content="=" Command="{Binding CalculateCommand}" CommandParameter="=" Click="btnEqual_Click" FontSize="25" BorderThickness="0" Focusable="False" Style="{StaticResource OperatorButtonStyle}"></dx:SimpleButton>
         </UniformGrid>
 
 

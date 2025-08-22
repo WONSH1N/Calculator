@@ -24,7 +24,7 @@
         <!-- 계산 기록 리스트 -->
         <ListBox Grid.Row="1"
                  x:Name="NoteListBox"
-                 ItemsSource="{Binding NoteHistory}"
+                 ItemsSource="{Binding Notes}"
                  Background="Black"
                  BorderThickness="0"
                  Foreground="White"
@@ -37,9 +37,9 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel Orientation="Horizontal" >
+                            <StackPanel Orientation="Horizontal" Width="220">
                                 <TextBlock Text="{Binding CalExp}" FontSize="14" Foreground="White" Width="150"/>
-                                <TextBlock Text="{Binding Display}" FontSize="16" FontWeight="Bold" Foreground="White" Width="100" Margin="10,0,0,0"/>
+                                <TextBlock Text="{Binding Display}" FontSize="16" FontWeight="Bold" Foreground="White" Width="60" />
                             </StackPanel>
                             <Button Content="삭제"
                                     Grid.Column="1"

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Calculator.Model
 {
-    internal class CalNoteControl
+    public class CalNoteControl
     {
+
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static Calculator.ViewModel.CalNoteViewModel;
 
 namespace Calculator.ViewModel
 {
@@ -16,35 +17,37 @@ namespace Calculator.ViewModel
 
         public ObservableCollection<NoteItem> Notes { get; } = new ObservableCollection<NoteItem>();
 
-        public ICommand AddNoteCommand { get; }
-
-        public CalNoteControl()
+        public void AddNote(string exp, string result)
         {
-            AddNoteCommand = new RelayCommand<string>(AddNote);
+            if (!string.IsNullOrWhiteSpace(exp) && !string.IsNullOrWhiteSpace(result))
+            {
+                Notes.Add(new NoteItem
+                {
+                    CalExp = exp,
+                    Display = result
+                });
+            }
         }
-      
 
-        private void AddNote(string expr)
+        public void DelNote(NoteItem item)
         {
-            var value = "";/* 계산 로직 실행한 결과 */
-            Notes.Add(new NoteItem { CalExp = expr, Display = value.ToString() });
+            if (Notes.Contains(item))
+            {
+                Notes.Remove(item);
+                OnPropertyChanged(nameof(Notes));
+            }
         }
         public class NoteItem
         {
             public string CalExp { get; set; } // 계산식
             public string Display { get; set; } // 표시할 결과
         }
-    }
-    public class CalNoteControl
-    {
-        public ObservableCollection<NoteItem> Notes { get; set; } = new ObservableCollection<NoteItem>();
 
-        public CalNoteControl()
+        public void Evaluate(string expression)
         {
-            // 초기 데이터 추가
-            Notes.Add(new NoteItem { CalExp = "2 + 2", Display = "4" });
-            Notes.Add(new NoteItem { CalExp = "3 * 3", Display = "9" });
-            Notes.Add(new NoteItem { CalExp = "5 - 1", Display = "4" });
+
         }
+        protected void OnPropertyChanged(string propertyName) =>
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

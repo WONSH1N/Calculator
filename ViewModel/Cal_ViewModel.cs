@@ -1,5 +1,6 @@
 ﻿using Calculator.Model;
 using Calculator.View;
+using Calculator.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +13,7 @@ namespace Calculator
     public class Cal_ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
+        public Action<string, string> OnCalculationFinished;
         private readonly CalFunctions _model;
         private string _display = "0";
         private string _topDisplay = "";
@@ -36,7 +37,7 @@ namespace Calculator
             {"÷", 2}
         };
         // 메모지 기능
-        public ObservableCollection<NoteItem> NoteHistory { get; } = new ObservableCollection<NoteItem>();
+        //public ObservableCollection<NoteItem> NoteHistory { get; } = new ObservableCollection<NoteItem>();
 
         // 출력 화면
         public string Display
@@ -76,7 +77,6 @@ namespace Calculator
         public Cal_ViewModel()
         {
             _model = new CalFunctions();
-
             EnterNumberCommand = new RelayCommand(EnterNumber);
             SetOperationCommand = new RelayCommand(SetOperation);
             CalculateCommand = new RelayCommand(Calculate);
@@ -217,7 +217,7 @@ namespace Calculator
                 _precedence.ContainsKey(newOp) &&
                 _precedence[_operatorStack.Peek()] >= _precedence[newOp])
             {
-                PerformCalculation();
+                PriorityCalculation();
             }
             _operatorStack.Push(newOp);
             CalcExp += Display + " " + newOp + " ";
@@ -256,9 +256,11 @@ namespace Calculator
                         Display = result.ToString();
                         CalcExp = currentValue + " " + _lastOp + " " + _lastNum + " = " + Display;
 
+ 
                         _numberStack.Clear();
                         _operatorStack.Clear();
                         _numberStack.Push(result);
+
                     }
                     catch (Exception ex)
                     {
@@ -282,7 +284,7 @@ namespace Calculator
 
             while (_operatorStack.Count > 0)
             {
-                PerformCalculation();
+                PriorityCalculation();
             }
 
             if (_numberStack.Count > 0)
@@ -306,20 +308,14 @@ namespace Calculator
                 _operatorStack.Clear();
                 _numberStack.Push(result); // 결과를 스택에 저장
             }
+            var (expression, resultText) = CalculationFinished();
 
+            OnCalculationFinished?.Invoke(expression, resultText);
             _isNewInput = true;
             _isResultDisplayed = true; // 결과표시 플래그
-
-            // 메모지 기능에 결과 추가
-            NoteHistory.Add(new NoteItem
-            {
-                CalExp = CalcExp,
-                Display = Display
-            });
         }
-
-        // 계산 수행
-        private void PerformCalculation()
+        // 계산 수행 (우선순위)
+        private void PriorityCalculation()
         {
             if (_numberStack.Count < 2 || _operatorStack.Count == 0)
                 return; 
@@ -442,6 +438,24 @@ namespace Calculator
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        // 메모지 기능 (계산 종료 후)
+
+        public (string Expression, string Result) CalculationFinished()
+        {
+            try
+            {
+                return (CalcExp, Display);
+
+            }
+            catch (Exception ex)
+            {
+                Display = "오류: " + ex.Message;
+                _isResultDisplayed = false;
+                return (null, null);
+            }
+        }
+
     }
 
 }
