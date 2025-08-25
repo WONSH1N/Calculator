@@ -49,7 +49,7 @@
 
 
         <!-- 바텀 -->
-        <Grid Grid.Row="2" Margin="10, 0, 10, 10">
+        <Grid Grid.Row="2" Margin="10, 5, 10, 5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>

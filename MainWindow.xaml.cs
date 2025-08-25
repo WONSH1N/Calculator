@@ -13,18 +13,25 @@ namespace Calculator
     /// </summary>
     public partial class MainWindow : ThemedWindow
     {
+        private Cal_ViewModel _calViewModel;
+        private CalNoteViewModel _calNoteViewModel; // CalNote.xaml의 ViewModel
         public MainWindow()
         {
 
             InitializeComponent();
 
-            _viewModel = new Cal_ViewModel();
-            _viewModel.OnCalculationFinished = AddToNote;  // ✅ 콜백 연결
+            _calViewModel = new Cal_ViewModel();
+            _calNoteViewModel = new CalNoteViewModel();
 
-            DataContext = _viewModel;
+            DataContext = _calViewModel;
+
+            // 계산이 끝났을 때 메모 추가
+            _calViewModel.OnCalculationFinished += (exp, result) =>
+            {
+                _calNoteViewModel.AddNote(exp, result);
+            };
         }
 
-        private Cal_ViewModel _viewModel;
 
 
         // 화면 이동
@@ -54,8 +61,7 @@ namespace Calculator
         private void OpenCalNoteWindow()
         {
             
-            _calNoteViewModel = new CalNoteViewModel(); // ViewModel
-            _calNoteWindow.DataContext = _calNoteViewModel;
+           var _calNoteWindow = new CalNote(_calNoteViewModel); // View
 
             PositionWindowRightOfMain(_calNoteWindow);
             _calNoteWindow.Owner = this;
@@ -154,32 +160,12 @@ namespace Calculator
     
         // 메모지 기능
         private CalNote _calNoteWindow;
-        private CalNoteViewModel _calNoteViewModel; // CalNote.xaml의 ViewModel
+       
 
         /// <summary>
         /// 계산 결과를 메모지 창에 추가
         /// </summary>
-        private void AddToNote(string expression, string result)
-        {
-
-            if (string.IsNullOrWhiteSpace(expression) || string.IsNullOrWhiteSpace(result))
-                return;
-
-            // 창이 닫혔거나 아직 생성되지 않았으면 새로 생성
-            if (_calNoteWindow == null || !_calNoteWindow.IsVisible)
-            {
-                
-                _calNoteViewModel = new CalNoteViewModel(); // ViewModel
-                _calNoteWindow.DataContext = _calNoteViewModel;
-
-                PositionWindowRightOfMain(_calNoteWindow);
-                _calNoteWindow.Owner = this;
-                _calNoteWindow.Show();
-            }
-
-            // ViewModel에 기록 추가
-            _calNoteViewModel.AddNote(expression, result);
-        }
+       
         private void btnEqual_Click(object sender, RoutedEventArgs e)
         {
             // 계산 후 메모지에 추가
@@ -190,5 +176,7 @@ namespace Calculator
            // AddToNote(); 
         }
     }
+
+
 }
 

@@ -21,7 +21,8 @@ namespace Calculator.ViewModel
         {
             if (!string.IsNullOrWhiteSpace(exp) && !string.IsNullOrWhiteSpace(result))
             {
-                Notes.Add(new NoteItem
+                // add 에서 Insert로 변경하여 최신 노트가 위에 오도록 함
+                Notes.Insert(0, new NoteItem
                 {
                     CalExp = exp,
                     Display = result
@@ -31,7 +32,7 @@ namespace Calculator.ViewModel
 
         public void DelNote(NoteItem item)
         {
-            if (Notes.Contains(item))
+            if (item != null && Notes.Contains(item))
             {
                 Notes.Remove(item);
                 OnPropertyChanged(nameof(Notes));
@@ -43,10 +44,7 @@ namespace Calculator.ViewModel
             public string Display { get; set; } // 표시할 결과
         }
 
-        public void Evaluate(string expression)
-        {
-
-        }
+       
         protected void OnPropertyChanged(string propertyName) =>
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
